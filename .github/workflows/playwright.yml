@@ -47,22 +47,18 @@ jobs:
       run: npm ci
 
     - uses: actions/download-artifact@v3
-      with:
-        path: artifacts/
         
     - name: Display structure of downloaded files
       run: ls -R
-      working-directory: artifacts/
     
     - name: Merge Playwright reports
       run: node scripts/merge-playwright-reports.js
-      working-directory: artifacts/
 
     - uses: actions/upload-artifact@v2
       if: always()
       with:
         name: playwright-merged-report
-        path: artifacts/merged-html-report/
+        path: merged-html-report/
         retention-days: 30
 
 
