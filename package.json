@@ -9,5 +9,8 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.25.1"
+  },
+  "dependencies": {
+    "playwright-merge-html-reports": "^0.2.4"
   }
 }
