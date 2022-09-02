@@ -6,7 +6,13 @@ on:
     branches: [ main, master ]
 jobs:
   test:
+    name: Test ${{ matrix.shard }} / ${{ matrix.shard-count }}
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
+        shard-count: [3]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -18,10 +24,10 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test
+      run: npx playwright test --shard=${{ matrix.shard }}/${{ matrix.shard-count }}
     - uses: actions/upload-artifact@v2
       if: always()
       with:
-        name: playwright-report
+        name: playwright-report-${{ matrix.shard }}
         path: playwright-report/
         retention-days: 30
