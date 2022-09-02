@@ -33,33 +33,28 @@ jobs:
         path: playwright-report/
         retention-days: 30
 
-  downlod-artifacts:
+  combine-artifacts:
     runs-on: ubuntu-latest
-    needs: test
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16.x'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
 
-    - name: Install dependencies
-      run: npm ci
+      - uses: actions/download-artifact@v3
+        with:
+          path: playwright-report
 
-    - uses: actions/download-artifact@v3
-        
-    - name: Display structure of downloaded files
-      run: ls -R
-    
-    - name: Merge Playwright reports
-      run: node scripts/merge-playwright-reports.js
+      - name: Display structure of downloaded files
+        run: ls -R
 
-    - uses: actions/upload-artifact@v2
-      if: always()
-      with:
-        name: playwright-merged-report
-        path: merged-html-report/
-        retention-days: 30
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: playwright-report
+          path: playtwright-report/
+          retention-days: 5
 
 
     

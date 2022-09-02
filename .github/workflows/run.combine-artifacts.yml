@@ -1,0 +1,32 @@
+# this workflow will download all artifacts from the previous workflow and merge them into one report
+#
+
+name: Combine artifacts
+
+on:
+  workflow_dispatch
+
+jobs:
+  combine-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+
+      - uses: actions/download-artifact@v3
+        with:
+          path: playwright-report
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: playwright-report
+          path: playtwright-report/
+          retention-days: 5
+
